@@ -29,8 +29,7 @@ def safe_quote_param(key, value):
     val = encode_utf8_string(value)
     return urllib.quote(key, safe='') + '=' + urllib.quote(val, safe='-_~')
 
-def encode_sort_params(parameters):
-    keys = parameters.keys()
-    keys.sort()
-    quoted = [ safe_quote_param(key, parameters[key]) for key in keys ]
-    return '&'.join(quoted)
+def encode_sort_params(params):
+    return '&'.join([
+        safe_quote_param(key, params[key]) for key in sorted(params.keys())
+    ])
