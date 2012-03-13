@@ -1,6 +1,6 @@
 import urllib
 
-from utils import encode_sort_params, iso_utcnow, parse_host_path, b64_hmac_sha256
+from utils import iso_utcnow, parse_host_path, b64_hmac_sha256
 
 class AmazonQuery(object):
     """
@@ -39,23 +39,19 @@ class AmazonQuery(object):
       self.parameters.update( parameters )
 
     def read(self):
+        self.parameters['Timestamp'] = iso_utcnow()
         self.sign_request()
         opener = self.opener_class()
         return opener.open(self.endpoint, self.encoded_parameters)
 
     @property
     def encoded_parameters(self):
-        return urllib.urlencode(self.parameters)
-
-    def _text_request_params(self):
-        host, path = parse_host_path(self.endpoint)
-        parameters = encode_sort_params(self.parameters)
-        return "\n".join(['POST', host, path, parameters])
+        params = dict(self.parameters, **{ 'Signature': self.signature })
+        return urllib.urlencode(params)
 
     def sign_request(self):
-        if 'Signature' in self.parameters:
-            del self.parameters['Signature']
-        self.parameters['Timestamp'] = iso_utcnow()
-        key = self.secret_access_key
-        text = self._text_request_params()
-        self.parameters['Signature'] = b64_hmac_sha256(key, text)
+        host, path = parse_host_path(self.endpoint)
+        # sorted params -- not strictly per amazon docs, but close
+        params = urllib.urlencode( sorted(self.parameters.items()) )
+        text = "\n".join(['POST', host, path, params])
+        self.signature = b64_hmac_sha256(self.secret_access_key, text)
