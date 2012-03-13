@@ -26,17 +26,12 @@ class AmazonQuery(object):
 
     :type parameters: dict
     :param parameters: Optional additional request parameters.
-
-    :type expiration: datetime
-    :param expiration: Optional request expiration
     """
 
     def __init__(self, endpoint, access_key_id, secret_access_key,
-                 action, parameters={}, expiration=None, opener_class=None):
+                 action, parameters={}, opener_class=None):
       # http://docs.amazonwebservices.com/AWSEC2/latest/APIReference/Query-Common-Parameters.html
       self.opener_class = opener_class or urllib.FancyURLopener
-      if expiration is None:
-          expiration = datetime.datetime.utcnow() + datetime.timedelta(minutes=5)
       self.endpoint = endpoint
       self.secret_access_key = secret_access_key
       self.parameters = {
@@ -45,13 +40,12 @@ class AmazonQuery(object):
           'AWSAccessKeyId': access_key_id,
           'SignatureVersion': 2,
           'SignatureMethod': 'HmacSHA256',
-          'Expires': expiration.isoformat(),
       }
       self.parameters.update( parameters )
 
     def read(self):
-        opener = self.opener_class()
         self.sign_request()
+        opener = self.opener_class()
         return opener.open(self.endpoint, self.encoded_parameters)
 
     @property
@@ -67,7 +61,9 @@ class AmazonQuery(object):
         return "%s\n%s\n%s\n%s" % (verb, host, path, parameters,)
 
     def sign_request(self):
+        if 'Signature' in self.parameters:
+            del self.parameters['Signature']
+        self.parameters['Timestamp'] = datetime.datetime.utcnow().isoformat()
         text = self._text_request_params()
         digest = hmac.new(self.secret_access_key, msg=text, digestmod=hashlib.sha256).digest()
-        signature = base64.b64encode(digest)
-        self.parameters.update({ 'Signature': signature })
+        self.parameters['Signature'] = base64.b64encode(digest)

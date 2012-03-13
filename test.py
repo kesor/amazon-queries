@@ -1,5 +1,4 @@
 import unittest
-import datetime
 
 from amazon_query import AmazonQuery
 from utils import encode_sort_params
@@ -12,15 +11,13 @@ class TestUtils(unittest.TestCase):
 
 class TestAmazonQuery(unittest.TestCase):
     def test_apicall_parameters(self):
-        now = datetime.datetime.now()
-        q = AmazonQuery('https://url.com', 'keyid', 'key', 'act', { 'foo': 'bar' }, expiration=now)
+        q = AmazonQuery('https://url.com', 'keyid', 'key', 'act', { 'foo': 'bar' })
         expected = {
             'Action': 'act',
             'Version': '2012-03-01',
             'AWSAccessKeyId': 'keyid',
             'SignatureVersion': 2,
             'SignatureMethod': 'HmacSHA256',
-            'Expires': now.isoformat(),
             'foo': 'bar',
         }
         self.assertDictContainsSubset(expected, q.parameters)
