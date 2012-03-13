@@ -1,6 +1,7 @@
 import urllib
+import urlparse
 
-from utils import iso_utcnow, parse_host_path, b64_hmac_sha256
+from utils import iso_utcnow, b64_hmac_sha256
 
 class AmazonQuery(object):
     """
@@ -50,8 +51,8 @@ class AmazonQuery(object):
         return urllib.urlencode(params)
 
     def sign_request(self):
-        host, path = parse_host_path(self.endpoint)
         # sorted params -- not strictly per amazon docs, but close
         params = urllib.urlencode( sorted(self.parameters.items()) )
-        text = "\n".join(['POST', host, path, params])
+        host = urlparse.urlparse(self.endpoint).hostname
+        text = "\n".join(['POST', host, '/', params])
         self.signature = b64_hmac_sha256(self.secret_access_key, text)

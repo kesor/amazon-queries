@@ -9,12 +9,6 @@ def b64_hmac_sha256(key, text):
     digest = hmac.new(key, msg=text, digestmod=hashlib.sha256).digest()
     return base64.b64encode(digest)
 
-def parse_host_path(url):
-    parsed = urlparse.urlparse(url)
-    host = parsed.hostname
-    path = parsed.path or '/'
-    return (host, path)
-
 def iso_utcnow():
     return datetime.datetime.utcnow().isoformat()
 
