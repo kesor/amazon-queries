@@ -25,10 +25,11 @@ class AmazonQuery(object):
     """
 
     def __init__(self, endpoint, access_key_id, secret_access_key,
-                 action, parameters={}, opener_class=None):
+                 action, parameters={}, path='/', opener_class=None):
       # http://docs.amazonwebservices.com/AWSEC2/latest/APIReference/Query-Common-Parameters.html
       self.opener_class = opener_class or urllib.FancyURLopener
       self.endpoint = endpoint
+      self.path = path
       self.secret_access_key = secret_access_key
       self.parameters = {
           'Action': action,
@@ -54,5 +55,5 @@ class AmazonQuery(object):
         # sorted params -- not strictly per amazon docs, but close
         params = urllib.urlencode( sorted(self.parameters.items()) )
         host = urlparse.urlparse(self.endpoint).hostname
-        text = "\n".join(['POST', host, '/', params])
+        text = "\n".join(['POST', host, self.path, params])
         self.signature = b64_hmac_sha256(self.secret_access_key, text)
