@@ -1,7 +1,6 @@
 import datetime
 import hmac, hashlib, base64
 import urllib, urlparse
-from urllib import FancyURLopener
 
 from utils import encode_sort_params
 
@@ -32,7 +31,7 @@ class AmazonQuery(object):
     def __init__(self, endpoint, access_key_id, secret_access_key,
                  action, parameters={}, expiration=None, opener_class=None):
       # http://docs.amazonwebservices.com/AWSEC2/latest/APIReference/Query-Common-Parameters.html
-      self.opener_class = opener_class or FancyURLopener
+      self.opener_class = opener_class or urllib.FancyURLopener
       if expiration is None:
           expiration = datetime.datetime.utcnow() + datetime.timedelta(minutes=5)
       self.endpoint = endpoint
