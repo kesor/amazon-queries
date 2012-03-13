@@ -1,9 +1,6 @@
-import hmac
-import hashlib
-import base64
 import urllib
 
-from utils import encode_sort_params, iso_utcnow, parse_host_path
+from utils import encode_sort_params, iso_utcnow, parse_host_path, b64_hmac_sha256
 
 class AmazonQuery(object):
     """
@@ -59,6 +56,6 @@ class AmazonQuery(object):
         if 'Signature' in self.parameters:
             del self.parameters['Signature']
         self.parameters['Timestamp'] = iso_utcnow()
+        key = self.secret_access_key
         text = self._text_request_params()
-        digest = hmac.new(self.secret_access_key, msg=text, digestmod=hashlib.sha256).digest()
-        self.parameters['Signature'] = base64.b64encode(digest)
+        self.parameters['Signature'] = b64_hmac_sha256(key, text)
