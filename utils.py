@@ -1,4 +1,8 @@
+import datetime
 import urllib
+
+def iso_utcnow():
+    return datetime.datetime.utcnow().isoformat()
 
 def encode_utf8_string(value):
     if not isinstance(value, basestring):

@@ -1,11 +1,10 @@
-import datetime
 import hmac
 import hashlib
 import base64
 import urllib
 import urlparse
 
-from utils import encode_sort_params
+from utils import encode_sort_params, iso_utcnow
 
 class AmazonQuery(object):
     """
@@ -63,7 +62,7 @@ class AmazonQuery(object):
     def sign_request(self):
         if 'Signature' in self.parameters:
             del self.parameters['Signature']
-        self.parameters['Timestamp'] = datetime.datetime.utcnow().isoformat()
+        self.parameters['Timestamp'] = iso_utcnow()
         text = self._text_request_params()
         digest = hmac.new(self.secret_access_key, msg=text, digestmod=hashlib.sha256).digest()
         self.parameters['Signature'] = base64.b64encode(digest)
