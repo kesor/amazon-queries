@@ -50,7 +50,7 @@ class AmazonQuery(object):
     def _text_request_params(self):
         host, path = parse_host_path(self.endpoint)
         parameters = encode_sort_params(self.parameters)
-        return "POST\n%s\n%s\n%s" % (host, path, parameters,)
+        return "\n".join(['POST', host, path, parameters])
 
     def sign_request(self):
         if 'Signature' in self.parameters:
