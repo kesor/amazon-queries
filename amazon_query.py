@@ -45,6 +45,7 @@ class AmazonQuery(object):
           'AWSAccessKeyId': access_key_id,
           'SignatureVersion': 2,
           'SignatureMethod': 'HmacSHA256',
+          'Timestamp': datetime.datetime.utcnow().isoformat(),
           'Expires': expiration.isoformat(),
       }
       self.parameters.update( parameters )
