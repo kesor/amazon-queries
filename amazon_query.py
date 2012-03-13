@@ -2,9 +2,8 @@ import hmac
 import hashlib
 import base64
 import urllib
-import urlparse
 
-from utils import encode_sort_params, iso_utcnow
+from utils import encode_sort_params, iso_utcnow, parse_host_path
 
 class AmazonQuery(object):
     """
@@ -52,12 +51,9 @@ class AmazonQuery(object):
         return urllib.urlencode(self.parameters)
 
     def _text_request_params(self):
-        parsed_url = urlparse.urlparse(self.endpoint)
-        verb = 'POST'
-        host = parsed_url.hostname
-        path = parsed_url.path or '/'
+        host, path = parse_host_path(self.endpoint)
         parameters = encode_sort_params(self.parameters)
-        return "%s\n%s\n%s\n%s" % (verb, host, path, parameters,)
+        return "POST\n%s\n%s\n%s" % (host, path, parameters,)
 
     def sign_request(self):
         if 'Signature' in self.parameters:

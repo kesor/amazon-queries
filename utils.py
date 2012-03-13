@@ -1,5 +1,12 @@
 import datetime
 import urllib
+import urlparse
+
+def parse_host_path(url):
+    parsed = urlparse.urlparse(url)
+    host = parsed.hostname
+    path = parsed.path or '/'
+    return (host, path)
 
 def iso_utcnow():
     return datetime.datetime.utcnow().isoformat()
