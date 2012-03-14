@@ -1,7 +1,7 @@
 import urllib
 import urlparse
-
-from utils import iso_utcnow, b64_hmac_sha256
+import datetime
+import hmac, hashlib, base64
 
 class AmazonQuery(object):
     """
@@ -43,7 +43,7 @@ class AmazonQuery(object):
       self.parameters.update( parameters )
 
     def read(self):
-        self.parameters['Timestamp'] = iso_utcnow()
+        self.parameters['Timestamp'] = datetime.datetime.utcnow().isoformat()
         opener = self.opener_class()
         return opener.open(self.endpoint, self.encoded_parameters)
 
@@ -56,4 +56,5 @@ class AmazonQuery(object):
     def signature(self):
         params = urllib.urlencode( sorted(self.parameters.items()) )
         text = "\n".join(['POST', self.host, self.path, params])
-        return b64_hmac_sha256(self.secret_access_key, text)
+        auth = hmac.new(self.secret_access_key, msg=text, digestmod=hashlib.sha256)
+        return base64.b64encode(auth.digest())
