@@ -5,10 +5,9 @@ import hmac, hashlib, base64
 class AmazonQuery(object):
     """
     Send a signed request to an Amazon AWS endpoint.
-    As described in http://docs.amazonwebservices.com/AWSEC2/latest/UserGuide/using-query-api.html
 
     :type endpoint: string
-    :param endpoint: http://docs.amazonwebservices.com/general/latest/gr/rande.html
+    :param endpoint: from http://docs.amazonwebservices.com/general/latest/gr/rande.html
 
     :type key_id: string
     :param key_id: The Access Key ID for the request sender.
