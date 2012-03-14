@@ -42,7 +42,6 @@ class AmazonQuery(object):
 
     def read(self):
         self.parameters['Timestamp'] = iso_utcnow()
-        self.sign_request()
         opener = self.opener_class()
         return opener.open(self.endpoint, self.encoded_parameters)
 
@@ -51,9 +50,9 @@ class AmazonQuery(object):
         params = dict(self.parameters, **{ 'Signature': self.signature })
         return urllib.urlencode(params)
 
-    def sign_request(self):
-        # sorted params -- not strictly per amazon docs, but close
+    @property
+    def signature(self):
         params = urllib.urlencode( sorted(self.parameters.items()) )
         host = urlparse.urlparse(self.endpoint).hostname
         text = "\n".join(['POST', host, self.path, params])
-        self.signature = b64_hmac_sha256(self.secret_access_key, text)
+        return b64_hmac_sha256(self.secret_access_key, text)
