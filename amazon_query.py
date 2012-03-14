@@ -16,28 +16,21 @@ class AmazonQuery(object):
     :type secret_key: string
     :param secret_key: Secret Access Key used for request signature.
 
-    :type action: string
-    :param action: Indicates the action to perform.
-
     :type parameters: dict
     :param parameters: Optional additional request parameters.
     """
 
-    def __init__(self, endpoint, key_id, secret_key, action, parameters={}):
-      # http://docs.amazonwebservices.com/AWSEC2/latest/APIReference/Query-Common-Parameters.html
-      parsed = urlparse.urlparse(endpoint)
-      self.host = parsed.hostname
-      self.path = parsed.path or '/'
-      self.endpoint = endpoint
-      self.secret_key = secret_key
-      self.parameters = {
-          'Action': action,
-          'Version': '2012-03-01',
-          'AWSAccessKeyId': key_id,
-          'SignatureVersion': 2,
-          'SignatureMethod': 'HmacSHA256',
-      }
-      self.parameters.update( parameters )
+    def __init__(self, endpoint, key_id, secret_key, parameters=dict()):
+        parsed = urlparse.urlparse(endpoint)
+        self.host = parsed.hostname
+        self.path = parsed.path or '/'
+        self.endpoint = endpoint
+        self.secret_key = secret_key
+        self.parameters = dict({
+            'AWSAccessKeyId': key_id,
+            'SignatureVersion': 2,
+            'SignatureMethod': 'HmacSHA256',
+        }, **parameters)
 
     def open(self, opener_class=urllib.FancyURLopener):
         self.parameters['Timestamp'] = datetime.datetime.utcnow().isoformat()
