@@ -1,6 +1,5 @@
-import urllib
-import urlparse
 import datetime
+import urllib, urlparse
 import hmac, hashlib, base64
 
 class AmazonQuery(object):
