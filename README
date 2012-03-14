@@ -1,0 +1,5 @@
+Very simple wrapper for signed and authenticated Amazon API queries.
+Works with most Amazon AWS APIs and various other services.
+
+The APIs themselves are described in the Amazon docs and are not part
+of the code in this module.
