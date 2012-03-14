@@ -25,10 +25,10 @@ class AmazonQuery(object):
 
     def __init__(self, endpoint, key_id, secret_key, action, parameters={}):
       # http://docs.amazonwebservices.com/AWSEC2/latest/APIReference/Query-Common-Parameters.html
-      self.endpoint = endpoint
       parsed = urlparse.urlparse(endpoint)
       self.host = parsed.hostname
       self.path = parsed.path or '/'
+      self.endpoint = endpoint
       self.secret_key = secret_key
       self.parameters = {
           'Action': action,
