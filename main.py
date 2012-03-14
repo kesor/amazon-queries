@@ -6,4 +6,4 @@ if __name__ == '__main__':
     secret   = 'example+example+example+example+example7'
     action   = 'DescribeRegions'
     query    = AmazonQuery(endpoint, key_id, secret, action)
-    print ''.join( query.read() )
+    print query.open().read()

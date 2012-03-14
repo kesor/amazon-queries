@@ -40,7 +40,7 @@ class AmazonQuery(object):
       }
       self.parameters.update( parameters )
 
-    def read(self, opener_class=urllib.FancyURLopener):
+    def open(self, opener_class=urllib.FancyURLopener):
         self.parameters['Timestamp'] = datetime.datetime.utcnow().isoformat()
         return opener_class().open(self.endpoint, self.encoded_parameters)
 
