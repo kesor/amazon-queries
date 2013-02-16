@@ -31,18 +31,15 @@ class AmazonQuery(object):
             'SignatureMethod': 'HmacSHA256',
         }, **parameters)
 
-    def open(self, opener_class=urllib.FancyURLopener):
+    def signed_parameters(self):
         self.parameters['Timestamp'] = datetime.datetime.utcnow().isoformat()
-        return opener_class().open(self.endpoint, self.encoded_parameters)
-
-    @property
-    def encoded_parameters(self):
         params = dict(self.parameters, **{ 'Signature': self.signature })
         return urllib.urlencode(params)
+    signed_parameters = property(signed_parameters)
 
-    @property
     def signature(self):
         params = urllib.urlencode( sorted(self.parameters.items()) )
         text = "\n".join(['POST', self.host, self.path, params])
         auth = hmac.new(self.secret_key, msg=text, digestmod=hashlib.sha256)
         return base64.b64encode(auth.digest())
+    signature = property(signature)

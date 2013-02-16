@@ -3,6 +3,7 @@ import xml.sax
 class XmlHandler(xml.sax.ContentHandler):
     def __init__(self):
         self.request_id = ''
+        self.request_id_indent = None
         self.indent = None
         self.root = None
 

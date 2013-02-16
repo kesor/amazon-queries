@@ -1,4 +1,5 @@
-from amazon_query import AmazonQuery
+import urllib
+from amazon.query import AmazonQuery
 from amazon_xml import AmazonXML
 
 if __name__ == '__main__':
@@ -13,9 +14,14 @@ if __name__ == '__main__':
 
     endpoint = 'http://ec2.us-west-1.amazonaws.com'
     question = { 'Version': '2012-03-01', 'Action': 'DescribeInstances' }
+    question = { 'Version': '2012-03-01', 'Action': 'DescribeReservedInstancesOfferings' }
+    question = { 'Version': '2012-03-01', 'Action': 'DescribeAvailabilityZones' }
 
     endpoint = 'http://elasticmapreduce.us-west-1.amazonaws.com'
     question = { 'Version': '2009-03-31', 'Action': 'DescribeJobFlows' }
+
+    endpoint = 'http://ec2.us-east-1.amazonaws.com'
+    question = { 'Version': '2012-10-01', 'Action': 'DescribeSpotPriceHistory' }
 
     endpoint = 'https://elasticache.us-west-1.amazonaws.com'
     question = { 'Version': '2011-07-15', 'Action': 'DescribeCacheClusters' }
@@ -23,20 +29,17 @@ if __name__ == '__main__':
     endpoint = 'https://rds.us-west-1.amazonaws.com'
     question = { 'Version': '2012-01-15', 'Action': 'DescribeDBEngineVersions' }
 
-    endpoint = 'http://sdb.us-west-1.amazonaws.com'
-    question = { 'Version': '2009-04-15', 'Action': 'ListDomains' }
-
     endpoint = 'http://sns.us-west-1.amazonaws.com'
     question = { 'Version': '2010-03-31', 'Action': 'ListTopics' }
 
     endpoint = 'http://sqs.us-west-1.amazonaws.com'
     question = { 'Version': '2011-10-01', 'Action': 'ListQueues' }
 
+    endpoint = 'http://sdb.us-west-1.amazonaws.com'
+    question = { 'Version': '2009-04-15', 'Action': 'ListDomains' }
+
     endpoint = 'http://s3-us-west-1.amazonaws.com'
     question = { 'Version': '2006-03-01', 'Action': 'ListAllMyBuckets' }
-
-    endpoint = 'http://autoscaling.us-west-1.amazonaws.com'
-    question = { 'Version': '2011-01-01', 'Action': 'DescribeTags' }
 
     endpoint = 'https://elasticbeanstalk.us-east-1.amazonaws.com'
     question = { 'Version': '2010-12-01', 'Action': 'ListAvailableSolutionStacks' }
@@ -44,14 +47,38 @@ if __name__ == '__main__':
     endpoint = 'https://iam.amazonaws.com'
     question = { 'Version': '2010-05-08', 'Action': 'ListUsers' }
 
+    endpoint = 'http://autoscaling.us-west-1.amazonaws.com'
+    question = { 'Version': '2011-01-01', 'Action': 'DescribeTags' }
+
     endpoint = 'https://importexport.amazonaws.com'
     question = { 'Version': '2010-06-01', 'Action': 'ListJobs' }
 
     endpoint = 'https://sts.amazonaws.com'
     question = { 'Version': '2011-06-15', 'Action': 'GetSessionToken' }
 
-    endpoint = 'http://elasticloadbalancing.us-west-1.amazonaws.com'
-    question = { 'Action': 'DescribeLoadBalancers', 'Version': '2011-11-15' }
+    endpoint = 'https://iam.amazonaws.com'
+    question = { 'Version': '2010-05-08', 'Action': 'GetUser' }
+    question = { 'Version': '2010-05-08', 'Action': 'ListUserPolicies', 'UserName': 'test_iam' }
+    question = { 'Version': '2010-05-08', 'Action': 'GetUserPolicy', 'UserName': 'test_iam', 'PolicyName': 'ReadOnlyAccess-test_iam-201203291722' }
 
-    query    = AmazonQuery(endpoint, key_id, secret, question)
-    print query.open().read()
+    endpoint = 'http://elasticloadbalancing.us-west-1.amazonaws.com'
+    question = { 'Version': '2011-11-15', 'Action': 'DescribeLoadBalancers' }
+
+    query = AmazonQuery(endpoint, key_id, secret, question)
+    print urllib.FancyURLopener().open(endpoint, query.signed_parameters).read()
+    # AmazonXML().parse(query.open())
+
+    # regions = [
+    #     "eu-west-1",
+    #     "sa-east-1",
+    #     "us-east-1",
+    #     "ap-northeast-1",
+    #     "us-west-2",
+    #     "us-west-1",
+    #     "ap-southeast-1"
+    # ]
+    # question = { 'Version': '2012-03-01', 'Action': 'DescribeAvailabilityZones' }
+    # for region in regions:
+    #     endpoint = 'http://ec2.%s.amazonaws.com' % region
+    #     query = AmazonQuery(endpoint, key_id, secret, question)
+    #     print urllib.FancyURLopener().open(endpoint, query.signed_parameters).read()
