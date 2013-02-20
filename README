@@ -3,3 +3,8 @@ Works with most Amazon AWS APIs and various other services.
 
 The APIs themselves are described in the Amazon docs and are not part
 of the code in this module.
+
+More information about the API for various AWS services can be found
+in the documentation at http://aws.amazon.com/documentation/
+
+The code is under a BSD license, detailed in the LICENSE file.
