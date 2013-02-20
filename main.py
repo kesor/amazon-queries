@@ -66,19 +66,3 @@ if __name__ == '__main__':
 
     query = AmazonQuery(endpoint, key_id, secret, question)
     print urllib.FancyURLopener().open(endpoint, query.signed_parameters).read()
-    # AmazonXML().parse(query.open())
-
-    # regions = [
-    #     "eu-west-1",
-    #     "sa-east-1",
-    #     "us-east-1",
-    #     "ap-northeast-1",
-    #     "us-west-2",
-    #     "us-west-1",
-    #     "ap-southeast-1"
-    # ]
-    # question = { 'Version': '2012-03-01', 'Action': 'DescribeAvailabilityZones' }
-    # for region in regions:
-    #     endpoint = 'http://ec2.%s.amazonaws.com' % region
-    #     query = AmazonQuery(endpoint, key_id, secret, question)
-    #     print urllib.FancyURLopener().open(endpoint, query.signed_parameters).read()
