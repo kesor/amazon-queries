@@ -1,6 +1,5 @@
 import urllib
 from amazon.query import AmazonQuery
-from amazon_xml import AmazonXML
 
 if __name__ == '__main__':
     key_id   = 'AKIAIEXAMPLEEXAMPLE6'
