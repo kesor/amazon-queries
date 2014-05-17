@@ -1,4 +1,5 @@
 import urllib
+import httplib
 from amazon.query import AmazonQuery
 
 if __name__ == '__main__':
@@ -10,6 +11,8 @@ if __name__ == '__main__':
     question = { 'Version': '2012-03-01', 'Action': 'DescribeInstances' }
 
     query = AmazonQuery(endpoint, key_id, secret, question)
+    # httplib.debuglevel = 1
+    # httplib.HTTPConnection.debuglevel = 1
     print urllib.FancyURLopener().open(endpoint, query.signed_parameters).read()
 
 #
