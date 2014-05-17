@@ -8,7 +8,7 @@ if __name__ == '__main__':
 
 
     endpoint = 'http://ec2.us-west-1.amazonaws.com'
-    question = { 'Version': '2012-03-01', 'Action': 'DescribeInstances' }
+    question = { 'Version': '2014-02-01', 'Action': 'DescribeInstances' }
 
     query = AmazonQuery(endpoint, key_id, secret, question)
     # httplib.debuglevel = 1
