@@ -1,19 +1,32 @@
 import urllib
-import httplib
+# import httplib
+# import socket
+import ssl
 from amazon.query import AmazonQuery
 
 if __name__ == '__main__':
-    key_id   = 'AKIAIEXAMPLEEXAMPLE6'
-    secret   = 'example+example+example+example+example7'
+    # key_id   = 'AKIAIEXAMPLEEXAMPLE6'
+    # secret   = 'example+example+example+example+example7'
 
+    # endpoint = 'http://ec2.us-west-1.amazonaws.com'
+    # question = { 'Version': '2014-02-01', 'Action': 'DescribeInstances' }
 
-    endpoint = 'http://ec2.us-west-1.amazonaws.com'
-    question = { 'Version': '2014-02-01', 'Action': 'DescribeInstances' }
-
-    query = AmazonQuery(endpoint, key_id, secret, question)
+    # query = AmazonQuery(endpoint, key_id, secret, question)
     # httplib.debuglevel = 1
     # httplib.HTTPConnection.debuglevel = 1
-    print urllib.FancyURLopener().open(endpoint, query.signed_parameters).read()
+    # print urllib.FancyURLopener().open(endpoint, query.signed_parameters).read()
+
+    endpoint = 'https://cloudformation.us-east-1.amazonaws.com'
+    question = { 'Version': '2010-05-15', 'Action': 'ListStacks' }
+    query = AmazonQuery(endpoint, key_id, secret, question)
+
+#    httplib.debuglevel = 1
+#    httplib.HTTPConnection.debuglevel = 1
+#    socket.ssl.cert_reqs='CERT_NONE'
+
+    ssl_content = ssl.create_default_context()
+    ssl_context.verify_mode = ssl.CERT_NONE
+    print urllib.urlopen(endpoint, query.signed_parameters, None, ssl_context).read()
 
 #
 # other questions to try ...
