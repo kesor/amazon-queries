@@ -16,7 +16,7 @@ class AmazonQuery
       'AWSAccessKeyId'   => key_id,
       'SignatureVersion' => 2,
       'SignatureMethod'  => 'HmacSHA256',
-      'Timestamp'        => Time.now.utc.iso8601
+      'Timestamp'        => Time.now.utc.iso8601 # '2016-07-17T10:48:48Z'
     })
   end
 
